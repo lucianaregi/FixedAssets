@@ -1,4 +1,5 @@
-﻿using FixedAssets.Application.Interfaces;
+﻿using FixedAssets.Application.DTOs;
+using FixedAssets.Application.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FixedAssets.Application\FixedAssets.Application.csproj" />
     <ProjectReference Include="..\FixedAssets.Domain\FixedAssets.Domain.csproj" />
   </ItemGroup>
 
