@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Reflection;
+using System.Text.Json;
 using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
 
@@ -6,7 +7,8 @@ namespace FixedAssets.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly string _filePath = "data/products.json"; // Caminho do arquivo JSON de produtos
+        private readonly string _filePath = "..\\FixedAssets.Infrastructure\\Data\\products.json";
+
 
         public async Task<List<Product>> GetAllProductsAsync()
         {

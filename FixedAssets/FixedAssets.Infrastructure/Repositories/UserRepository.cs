@@ -6,7 +6,7 @@ namespace FixedAssets.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly string _filePath = "data/users.json"; // Caminho do arquivo JSON de usuários
+        private readonly string _filePath = "..\\FixedAssets.Infrastructure\\Data\\users.json"; // Caminho do arquivo JSON de usuários
 
         public async Task<User> GetUserByIdAsync(int id)
         {

@@ -1,0 +1,1 @@
+[{"Id":1,"Name":"CDB","Indexer":"IPCA","Tax":5.0,"UnitPrice":1000,"Stock":100},{"Id":2,"Name":"LCI","Indexer":"Pr\u00E9","Tax":12.0,"UnitPrice":2000,"Stock":45},{"Id":3,"Name":"Tesouro Direto","Indexer":"Selic","Tax":6.5,"UnitPrice":100,"Stock":500}]
