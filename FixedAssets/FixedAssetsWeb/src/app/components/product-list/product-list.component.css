@@ -1,0 +1,8 @@
+a {
+  color: inherit; /* Verifique se a cor não está sendo definida como transparente */
+  text-decoration: underline; /* Para garantir que o link apareça sublinhado */
+}
+
+  a:hover {
+    cursor: pointer; /* Assegura que o ponteiro do mouse mude ao passar sobre o link */
+  }

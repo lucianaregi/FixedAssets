@@ -1,20 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
+
+const routes: Routes = [
+  { path: 'produtos', component: ProductListComponent },
+  { path: '', redirectTo: '/produtos', pathMatch: 'full' }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent  // Componentes que vamos declarar
+    ProductListComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule  // Importa o HttpClientModule para chamadas HTTP
+    RouterModule.forRoot(routes) // Configura o roteamento
   ],
   providers: [],
-  bootstrap: [AppComponent]  // Inicializa o AppComponent no início
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
