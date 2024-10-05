@@ -1,1 +1,7 @@
-<p>product-details works!</p>
+<h2>Detalhes do Produto</h2>
+<div>
+  <p><strong>ID:</strong> {{ product.id }}</p>
+  <p><strong>Nome:</strong> {{ product.name }}</p>
+  <p><strong>Descrição:</strong> {{ product.description }}</p>
+  <p><strong>Preço:</strong> {{ product.price | currency }}</p>
+</div>
