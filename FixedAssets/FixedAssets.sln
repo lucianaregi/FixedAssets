@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Application", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Infrastructure", "FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj", "{63EA4E42-6860-4292-9DEF-66A04EA808DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Application.Tests", "FixedAssets.Application.Tests\FixedAssets.Application.Tests.csproj", "{F6C6E9EB-347E-47EE-97DB-81026B5330D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{63EA4E42-6860-4292-9DEF-66A04EA808DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63EA4E42-6860-4292-9DEF-66A04EA808DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63EA4E42-6860-4292-9DEF-66A04EA808DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6C6E9EB-347E-47EE-97DB-81026B5330D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6C6E9EB-347E-47EE-97DB-81026B5330D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6C6E9EB-347E-47EE-97DB-81026B5330D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6C6E9EB-347E-47EE-97DB-81026B5330D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
