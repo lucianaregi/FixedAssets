@@ -3,10 +3,10 @@ name: CI Pipeline - Build, Test and Lint
 on:
   push:
     branches:
-      - main   # Rodar a pipeline quando houver push na branch "main"
+      - main   
   pull_request:
     branches:
-      - main   # Rodar a pipeline em Pull Requests para a branch "main"
+      - main   
 
 jobs:
   build-backend:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.0.4'  # Ajuste para a versão do .NET que está utilizando
+          dotnet-version: '7.x' 
 
       - name: Restore NuGet packages
         run: dotnet restore
@@ -42,16 +42,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '22.9.0'  # Versão do Node.js
+          node-version: '22.x'  
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./FixedAssetsWeb # Diretório onde o frontend Angular está
+        working-directory: ./src/FixedAssetsWeb
 
       - name: Lint the code
         run: npm run lint
-        working-directory: ./FixedAssetsWeb
+        working-directory: ./src/FixedAssetsWeb
 
       - name: Build the frontend
         run: npm run build
-        working-directory: ./FixedAssetsWeb
+        working-directory: ./src/FixedAssetsWeb
