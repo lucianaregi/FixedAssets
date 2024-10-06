@@ -1,0 +1,13 @@
+<h2>Histórico de Compras</h2>
+<div *ngIf="message">{{ message }}</div>
+
+<ul *ngIf="purchases.length > 0; else noPurchases">
+  <li *ngFor="let purchase of purchases">
+    Produto: {{ purchase.productName }} - Quantidade: {{ purchase.quantity }} - Total: {{ purchase.totalPrice | currency }}
+  </li>
+</ul>
+
+<ng-template #noPurchases>
+  <p>Nenhuma compra realizada.</p>
+</ng-template>
+

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-//import { CurrencyPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,10 +14,12 @@ import { CommonModule } from '@angular/common';
 export class ProductDetailsComponent implements OnInit {
 
   product: any;
+  message: string | undefined;
 
   constructor(
-    private route: ActivatedRoute, // Para acessar os parâmetros da rota
-    private productService: ProductService  // Para buscar os detalhes do produto
+    private route: ActivatedRoute, 
+    private productService: ProductService , 
+    private http: HttpClient 
   ) { }
 
   ngOnInit(): void {
@@ -31,4 +33,28 @@ export class ProductDetailsComponent implements OnInit {
       });
     }
   }
+
+  buyProduct(): void {
+    const order = {
+      userId: 1,           // ID do usuário
+      productId: this.product.id,
+      quantity: 1          // Quantidade desejada
+    };
+
+    this.http.post('http://localhost:5212/api/user/order', order).subscribe(
+      response => {
+        this.message = 'Compra realizada com sucesso!';
+      },
+      error => {
+        if (error.status === 400 && error.error === 'Saldo insuficiente.') {
+          this.message = 'Saldo insuficiente para realizar a compra.';
+        } else {
+          this.message = 'Erro ao processar a compra.';
+        }
+      }
+    );
+  }
+
+
+
 }

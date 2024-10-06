@@ -40,5 +40,19 @@ namespace FixedAssets.Api.Controllers
 
             return Ok("Compra realizada com sucesso.");
         }
+
+        //[HttpGet("{id}/orders")]
+        //public async Task<IActionResult> GetUserOrders(int id)
+        //{
+        //    var orders = await _orderService.GetOrdersByUserId(id);
+        //    if (orders == null || !orders.Any()) return NotFound("Nenhuma compra encontrada.");
+
+        //    return Ok(orders.Select(o => new {
+        //        o.Product.Name,
+        //        o.Quantity,
+        //        TotalPrice = o.Quantity * o.Product.Price
+        //    }));
+        //}
+
     }
 }
