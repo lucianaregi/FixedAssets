@@ -1,4 +1,5 @@
 ﻿using FixedAssets.Application.DTOs;
+using FixedAssets.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace FixedAssets.Application.Interfaces
     public interface IOrderService
     {
         Task<bool> ProcessOrder(OrderDto order);
+        Task<List<Order>> GetOrdersByUserId(int userId);
     }
 }

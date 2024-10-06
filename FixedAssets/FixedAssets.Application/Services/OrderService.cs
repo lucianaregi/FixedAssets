@@ -1,5 +1,6 @@
 ﻿using FixedAssets.Application.DTOs;
 using FixedAssets.Application.Interfaces;
+using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace FixedAssets.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public OrderService(IUserRepository userRepository, IProductRepository productRepository)
+        public OrderService(IUserRepository userRepository, IProductRepository productRepository, IOrderRepository orderRepository)
         {
             _userRepository = userRepository;
             _productRepository = productRepository;
+            _orderRepository = orderRepository;
         }
 
         public async Task<bool> ProcessOrder(OrderDto order)
@@ -39,6 +42,11 @@ namespace FixedAssets.Application.Services
 
             return true;
         }
-    }
 
+        public async Task<List<Order>> GetOrdersByUserId(int userId)
+        {
+            return await _orderRepository.GetOrdersByUserId(userId);
+            
+        }
+    }
 }

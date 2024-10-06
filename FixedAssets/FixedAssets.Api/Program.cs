@@ -1,9 +1,15 @@
 using FixedAssets.Application.Interfaces;
 using FixedAssets.Application.Services;
 using FixedAssets.Infrastructure.Interfaces;
+using FixedAssets.Infrastructure.Persistence;
 using FixedAssets.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Registrar o ApplicationDbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -25,7 +31,6 @@ builder.Services.AddCors(options =>
     );
 });
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,4 +48,3 @@ app.UseCors("CorsPolicy");
 app.MapControllers();
 
 app.Run();
-
