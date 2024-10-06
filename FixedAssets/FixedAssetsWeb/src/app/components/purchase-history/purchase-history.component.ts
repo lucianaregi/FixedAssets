@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Purchase } from '../../models/purchase.model'; 
 
 @Component({
   selector: 'app-purchase-history',
@@ -11,22 +12,25 @@ import { CommonModule } from '@angular/common';
 })
 
 export class PurchaseHistoryComponent implements OnInit {
-  purchases: any[] = [];
+  purchases: Purchase[] = [];
   message: string | undefined;
 
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     // Simulação: Id do usuário logado
-    const userId = 1; // Substitua pelo ID real
+    const userId = 1;
 
-    this.http.get(`http://localhost:5212/api/user/${userId}/orders`).subscribe(
-      (data: any) => {
-        this.purchases = data;
+    // Fazendo uma chamada HTTP GET para obter o histórico de compras do usuário
+    this.http.get<Purchase[]>(`http://localhost:5212/api/user/${userId}/orders`).subscribe(
+      (data: Purchase[]) => {
+        this.purchases = data;  // Agora "data" é tipado como um array de "Purchase"
       },
-      error => {
-        this.message = 'Erro ao carregar o histórico de compras.';
+      () => {
+        this.message = 'Erro ao carregar o histórico de compras.';  // Erro tratado genericamente
       }
     );
+
   }
+ 
 }
