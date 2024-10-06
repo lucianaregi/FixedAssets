@@ -1,8 +1,8 @@
 export interface Product {
   id: number;
   name: string;
-  Indexer: string;
-  price: number;
+  indexer: string;
+  unitPrice: number;
   stock: number;
   tax: number;
 }
