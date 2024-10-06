@@ -73,6 +73,12 @@ jobs:
         with:
           dotnet-version: '7.x'
 
+      - name: Install SonarScanner .NET Global Tool
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - name: Add .NET tools to PATH
+        run: echo "::add-path::~/.dotnet/tools"
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v2
         with:
