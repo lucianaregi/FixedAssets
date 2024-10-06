@@ -55,8 +55,8 @@ jobs:
       - name: Build the frontend
         run: npm run build
         working-directory: ./FixedAssets/FixedAssetsWeb
-        
-sonarcloud:
+
+  sonarcloud:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
     steps:
