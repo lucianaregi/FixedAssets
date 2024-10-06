@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.x' 
+          dotnet-version: '8.x' 
 
       - name: Restore NuGet packages
         run: dotnet restore ./FixedAssets/FixedAssets.sln 
@@ -29,7 +29,8 @@ jobs:
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
 
       - name: Run unit tests
-        run: dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity normal
+        run: dotnet test ./FixedAssets/FixedAssets.sln --configuration Debug --no-build --verbosity normal
+
 
   build-frontend:
     name: Build and Lint Frontend
