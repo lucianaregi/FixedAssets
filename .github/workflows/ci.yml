@@ -29,7 +29,8 @@ jobs:
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
 
       - name: Run unit tests
-        run: dotnet test ./FixedAssets/FixedAssets.sln --configuration Debug --no-build --verbosity normal
+        run: dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity detailed
+
 
 
   build-frontend:
