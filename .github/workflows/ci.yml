@@ -23,7 +23,7 @@ jobs:
           dotnet-version: '7.x' 
 
       - name: Restore NuGet packages
-        run: dotnet restore ./FixedAssets/FixedAssets.sln
+        run: dotnet restore ./FixedAssets/FixedAssets.sln 
 
       - name: Build the backend
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
