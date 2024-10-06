@@ -1,8 +1,34 @@
+/* Estilizando a lista de produtos */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f8f8f8;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+  li:hover {
+    background-color: #e0e0e0;
+  }
+
 a {
-  color: inherit; /* Verifique se a cor não está sendo definida como transparente */
-  text-decoration: underline; /* Para garantir que o link apareça sublinhado */
+  text-decoration: none;
+  color: #ca1413;
+  font-weight: bold;
+  font-size: 18px;
 }
 
   a:hover {
-    cursor: pointer; /* Assegura que o ponteiro do mouse mude ao passar sobre o link */
+    text-decoration: underline;
+    color: #0056b3;
   }

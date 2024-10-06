@@ -1,7 +1,11 @@
 <h2>Detalhes do Produto</h2>
-<div>
+
+<div *ngIf="product">
   <p><strong>ID:</strong> {{ product.id }}</p>
   <p><strong>Nome:</strong> {{ product.name }}</p>
-  <p><strong>Descrição:</strong> {{ product.description }}</p>
-  <p><strong>Preço:</strong> {{ product.price | currency }}</p>
+  <p><strong>Indexador:</strong> {{ product.indexer }}</p>
+  <p><strong>Preço:</strong> {{ product.unitPrice | currency:'BRL':'symbol':'1.2-2' }}</p>
+  <p><strong>Estoque:</strong> {{ product.stock }}</p>
+
 </div>
+

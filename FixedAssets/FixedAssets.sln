@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Api", "FixedAssets.Api\FixedAssets.Api.csproj", "{855DA3D9-E297-47F2-AE83-500EDEF69341}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Api", "FixedAssets.Api\FixedAssets.Api.csproj", "{855DA3D9-E297-47F2-AE83-500EDEF69341}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Domain", "FixedAssets.Domain\FixedAssets.Domain.csproj", "{598525A8-ADD6-4830-8A40-DD3D5376163B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Domain", "FixedAssets.Domain\FixedAssets.Domain.csproj", "{598525A8-ADD6-4830-8A40-DD3D5376163B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Application", "FixedAssets.Application\FixedAssets.Application.csproj", "{7EE521BF-FA83-4013-9D11-57AC79D7F82F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Application", "FixedAssets.Application\FixedAssets.Application.csproj", "{7EE521BF-FA83-4013-9D11-57AC79D7F82F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Infrastructure", "FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj", "{63EA4E42-6860-4292-9DEF-66A04EA808DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Infrastructure", "FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj", "{63EA4E42-6860-4292-9DEF-66A04EA808DA}"
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "FixedAssetsWeb", "FixedAssetsWeb\", "{587F67EB-1C8A-4F3B-9F0B-EC25B4AA5226}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8.1"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_54319"
 		Debug.AspNetCompiler.PhysicalPath = "FixedAssetsWeb\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54319\"

@@ -1,0 +1,32 @@
+/* Estilo da página de detalhes do produto */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+div {
+  background-color: #f4f4f9;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  margin: 10px 0;
+}
+
+strong {
+  color: #555;
+}
+
+p:last-child {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ca1413;
+}
+
+  p:last-child:hover {
+    color: #0056b3;
+  }

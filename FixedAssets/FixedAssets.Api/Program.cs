@@ -14,6 +14,18 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Adicionar CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy",
+        builder => builder
+            .AllowAnyOrigin() // Permite requisições de qualquer origem
+            .AllowAnyMethod() // Permite todos os métodos HTTP
+            .AllowAnyHeader() // Permite todos os cabeçalhos
+    );
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +36,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+// Habilitar CORS no pipeline
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 
