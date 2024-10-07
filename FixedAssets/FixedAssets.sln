@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Application", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Infrastructure", "FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj", "{63EA4E42-6860-4292-9DEF-66A04EA808DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixedAssets.Application.Tests", "FixedAssets.Application.Tests\FixedAssets.Application.Tests.csproj", "{F6C6E9EB-347E-47EE-97DB-81026B5330D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixedAssets.Application.Tests", "FixedAssets.Application.Tests\FixedAssets.Application.Tests.csproj", "{F6C6E9EB-347E-47EE-97DB-81026B5330D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79D3D7F5-13C8-4CB0-9E11-C997803A15AA}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
