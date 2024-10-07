@@ -26,13 +26,13 @@ jobs:
         run: dotnet restore ./FixedAssets/FixedAssets.sln 
 
       - name: Build the backend
-        run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
+        run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Debug --no-restore
 
-      - name: List DLL Files (Debug)
-        run: ls -R ./FixedAssets/FixedAssets.Application.Tests/bin/Debug/net8.0
+      - name: List Files in Debug Folder
+        run: find ./FixedAssets -name '*.dll'
 
       - name: Run unit tests
-        run: dotnet test ./FixedAssets/FixedAssets.Application.Tests/FixedAssets.Application.Tests.csproj --no-build --verbosity diagnostic
+        run: dotnet test ./FixedAssets/FixedAssets.Application.Tests/FixedAssets.Application.Tests.csproj --configuration Debug --no-build --verbosity detailed
 
   build-frontend:
     name: Build and Lint Frontend
