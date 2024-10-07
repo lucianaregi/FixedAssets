@@ -20,10 +20,10 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.x' 
+          dotnet-version: '8.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore ./FixedAssets/FixedAssets.sln 
+        run: dotnet restore ./FixedAssets/FixedAssets.sln
 
       - name: Build the backend
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Debug --no-restore
@@ -104,4 +104,4 @@ jobs:
         run: |
           dotnet-sonarscanner begin /k:"lucianaregi_FixedAssets" /o:"luciana-rocha" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet build ./FixedAssets/FixedAssets.sln
-          bash -c "dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'"
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
