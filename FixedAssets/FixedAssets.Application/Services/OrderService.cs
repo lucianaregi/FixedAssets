@@ -80,11 +80,12 @@ namespace FixedAssets.Application.Services
                 OrderItems = order.OrderItems.Select(item => new OrderItemDto
                 {
                     ProductId = item.ProductId,
-                    ProductName = item.Product.Name,
+                    ProductName = item.Product != null ? item.Product.Name : "Produto não encontrado",
                     Quantity = item.Quantity,
                     UnitPrice = item.UnitPrice
                 }).ToList()
             }).ToList();
         }
+
     }
 }

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FixedAssets.Domain\FixedAssets.Domain.csproj" />
     <ProjectReference Include="..\FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj" />
   </ItemGroup>
