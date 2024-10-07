@@ -28,8 +28,11 @@ jobs:
       - name: Build the backend
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
 
+      - name: List DLL Files (Debug)
+        run: ls -R ./FixedAssets/FixedAssets.Application.Tests/bin/Debug/net8.0
+
       - name: Run unit tests
-        run: dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity diagnostic
+        run: dotnet test ./FixedAssets/FixedAssets.Application.Tests/FixedAssets.Application.Tests.csproj --no-build --verbosity diagnostic
 
   build-frontend:
     name: Build and Lint Frontend
