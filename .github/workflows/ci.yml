@@ -80,7 +80,7 @@ jobs:
         run: dotnet tool install --global dotnet-sonarscanner
 
       - name: Add .NET tools to PATH
-        run: echo "::add-path::${HOME}/.dotnet/tools"
+        run: echo "${HOME}/.dotnet/tools" >> $GITHUB_ENV
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v2
