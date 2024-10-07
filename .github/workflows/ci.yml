@@ -29,7 +29,7 @@ jobs:
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release --no-restore
 
       - name: Run unit tests
-        run: dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity detailed
+        run: dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity normal --logger "console;verbosity=detailed"
 
   build-frontend:
     name: Build and Lint Frontend
@@ -57,50 +57,29 @@ jobs:
         working-directory: ./FixedAssets/FixedAssetsWeb
 
   sonarcloud:
-    name: SonarCloud Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 11 (SonarCloud needs it)
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.x'
-
-      - name: Install SonarScanner .NET Global Tool
-        run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Add .NET tools to PATH
-        run: echo "::add-path::${HOME}/.dotnet/tools"
-
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-
-      - name: Cache NuGet packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-
-      - name: Install .NET dependencies
-        run: dotnet restore ./FixedAssets/FixedAssets.sln
-
-      - name: Build the backend
-        run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release
-
-      - name: Run SonarCloud scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          dotnet-sonarscanner begin /k:"lucianaregi_FixedAssets" /o:"luciana-rocha" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-          dotnet build ./FixedAssets/FixedAssets.sln
-          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+  name: SonarCloud Scan
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.x'
+    - name: Install SonarScanner
+      run: dotnet tool install --global dotnet-sonarscanner
+    - name: Begin SonarCloud scan
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: |
+        dotnet sonarscanner begin /k:"lucianaregi_FixedAssets" /o:"luciana-rocha" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+    - name: Build and analyze
+      run: |
+        dotnet build ./FixedAssets/FixedAssets.sln --configuration Release
+        dotnet test ./FixedAssets/FixedAssets.sln --no-build --verbosity normal --logger "console;verbosity=detailed"
+    - name: End SonarCloud scan
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
