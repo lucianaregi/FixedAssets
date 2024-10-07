@@ -10,7 +10,9 @@ namespace FixedAssets.Infrastructure.Interfaces
 {
     public interface IOrderRepository
     {
-       Task<List<Order>> GetOrdersByUserId(int userId);
+       Task<List<Order>> GetOrdersByUserIdWithProduct(int userId);
+        Task CreateOrderAsync(Order order);
     }
-
 }
+
+

@@ -9,9 +9,9 @@ namespace FixedAssets.Infrastructure.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllProductsAsync(); // Retorna todos os produtos
-        Task<Product> GetProductByIdAsync(int id); // Retorna um produto específico por ID
-        Task UpdateProductAsync(Product product);  // Atualiza o estoque do produto após a compra
+        Task<List<Product>> GetAllProductsAsync(); 
+        Task<Product> GetProductByIdAsync(int id); 
+        Task UpdateProductAsync(Product product);  
     }
 }
 

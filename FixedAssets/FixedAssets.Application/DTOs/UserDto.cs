@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FixedAssets.Application.DTOs
 {
@@ -10,9 +6,9 @@ namespace FixedAssets.Application.DTOs
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string CPF { get; set; } 
         public decimal Balance { get; set; }
         public List<UserAssetDto> Assets { get; set; }
+        public List<OrderDto> Orders { get; set; } 
     }
-
-    
 }

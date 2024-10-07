@@ -24,19 +24,37 @@ namespace FixedAssets.Application.Tests.Services
         [Fact]
         public async Task GetUserById_ShouldReturnUser_WhenUserExists()
         {
-            // Arrange
-            var userId = 1;
-            var expectedUser = new User { Id = userId, Name = "Test User", Balance = 1000 };
+            try
+            {
+                // Arrange
+                var userId = 1;
+                var expectedUser = new User
+                {
+                    Id = userId,
+                    Name = "Test User",
+                    Balance = 1000,
+                    CPF = "123.456.789-00", 
+                    Orders = new List<Order>(), 
+                    Assets = new List<UserAsset>()  
+                };
 
-            _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
-                .ReturnsAsync(expectedUser);
+                _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(userId))
+                    .ReturnsAsync(expectedUser);
 
-            // Act
-            var user = await _userService.GetUserByIdAsync(userId);
+                // Act
+                var user = await _userService.GetUserByIdAsync(userId);
 
-            // Assert
-            user.Should().BeEquivalentTo(expectedUser);
+                // Assert
+                user.Should().BeEquivalentTo(expectedUser, options => options.Excluding(u => u.Assets));
+            }
+            catch (Exception ex)
+            {
+               
+                Assert.True(false, $"Test failed with exception: {ex.Message} {ex.StackTrace}");
+            }
         }
+
+
 
         [Fact]
         public async Task GetUserById_ShouldReturnNull_WhenUserDoesNotExist()

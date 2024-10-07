@@ -1,6 +1,7 @@
 ﻿using FixedAssets.Application.Interfaces;
 using FixedAssets.Application.DTOs;
 using FixedAssets.Infrastructure.Interfaces;
+using FixedAssets.Domain.Entities;
 
 namespace FixedAssets.Application.Services
 {
@@ -24,15 +25,32 @@ namespace FixedAssets.Application.Services
             {
                 Id = user.Id,
                 Name = user.Name,
+                CPF = user.CPF,
                 Balance = user.Balance,
-                Assets = user.Assets.Select(a => new UserAssetDto
+                Orders = user.Orders?.Select(o => new OrderDto
+                {
+                    Id = o.Id,
+                    OrderDate = o.OrderDate,
+                    UserId = o.UserId,
+                    OrderItems = o.OrderItems?.Select(oi => new OrderItemDto
+                    {
+                        ProductId = oi.ProductId,
+                        ProductName = oi.Product.Name,  
+                        Quantity = oi.Quantity,
+                        UnitPrice = oi.UnitPrice
+                    }).ToList()
+                }).ToList(),
+                Assets = user.Assets?.Select(a => new UserAssetDto
                 {
                     ProductId = a.ProductId,
                     ProductName = a.ProductName,
                     Quantity = a.Quantity
-                }).ToList()
+                }).ToList() ?? new List<UserAssetDto>()
             };
         }
+
+
+
 
         public async Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity)
         {

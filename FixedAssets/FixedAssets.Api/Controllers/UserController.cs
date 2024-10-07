@@ -29,33 +29,26 @@ namespace FixedAssets.Api.Controllers
             return Ok(user);
         }
 
-        // POST: api/order
-        [HttpPost("order")]
-        public async Task<IActionResult> ProcessOrder([FromBody] OrderDto order)
-        {
-            // Validação dos dados
-            if (order == null || order.Quantity <= 0) return BadRequest("Dados inválidos.");
-
-            // Processar a compra
-            var result = await _userService.ProcessPurchaseAsync(order.UserId, order.ProductId, order.Quantity);
-            if (!result) return BadRequest("Erro ao processar a compra.");
-
-            return Ok("Compra realizada com sucesso.");
-        }
-
+        
         [HttpGet("{id}/orders")]
         public async Task<IActionResult> GetUserOrders(int id)
         {
             var orders = await _orderService.GetOrdersByUserId(id);
-            if (orders == null || !orders.Any()) return NotFound("Nenhuma compra encontrada.");
 
-            return Ok(orders.Select(o => new
+            if (orders == null || !orders.Any())
+                return NotFound("Nenhuma compra encontrada.");
+
+            var orderDetails = orders.SelectMany(o => o.OrderItems.Select(oi => new
             {
-                o.Product.Name,
-                o.Quantity,
-                TotalPrice = o.Quantity * o.Product.UnitPrice
-            }));
+                ProductName = oi.Product.Name,
+                Quantity = oi.Quantity,
+                UnitPrice = oi.Product.UnitPrice,
+                TotalPrice = oi.Quantity * oi.Product.UnitPrice
+            })).ToList();
+
+            return Ok(orderDetails);
         }
+
 
     }
 }

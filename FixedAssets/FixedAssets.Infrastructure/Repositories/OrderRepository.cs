@@ -19,14 +19,22 @@ namespace FixedAssets.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Order>> GetOrdersByUserId(int userId)
+        public async Task<List<Order>> GetOrdersByUserIdWithProduct(int userId)
         {
-            // Busca todas as ordens associadas a um usuário pelo UserId
             return await _context.Orders
-                                 .Where(o => o.UserId == userId)
-                                 .Include(o => o.Product)  
-                                 .ToListAsync();
+                .Where(o => o.UserId == userId)
+                .Include(o => o.OrderItems) 
+                .ThenInclude(oi => oi.Product) 
+                .ToListAsync();
         }
+
+        public async Task CreateOrderAsync(Order order)
+        {
+           
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
+        }
+
     }
 
 }
