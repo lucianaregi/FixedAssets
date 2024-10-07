@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FixedAssets.Api\FixedAssets.Api.csproj" />
     <ProjectReference Include="..\FixedAssets.Application\FixedAssets.Application.csproj" />
     <ProjectReference Include="..\FixedAssets.Domain\FixedAssets.Domain.csproj" />
     <ProjectReference Include="..\FixedAssets.Infrastructure\FixedAssets.Infrastructure.csproj" />
@@ -26,11 +27,6 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
