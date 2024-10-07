@@ -97,10 +97,10 @@ jobs:
       - name: Build the backend
         run: dotnet build ./FixedAssets/FixedAssets.sln --configuration Release
 
-       - name: Run SonarCloud scan
+      - name: Run SonarCloud scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /k:"lucianaregi_FixedAssets" /o:"luciana-rocha" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner begin /k:lucianaregi_FixedAssets /o:luciana-rocha /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet build ./FixedAssets/FixedAssets.sln
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
