@@ -2,6 +2,9 @@
 using FixedAssets.Application.DTOs;
 using FixedAssets.Infrastructure.Interfaces;
 using FixedAssets.Domain.Entities;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FixedAssets.Application.Services
 {
@@ -16,11 +19,44 @@ namespace FixedAssets.Application.Services
             _productRepository = productRepository;
         }
 
-        public async Task<UserDto> GetUserByIdAsync(int userId)
+        
+        public async Task<UserDto?> GetUserByIdAsync(int userId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null) return null;
 
+            return MapToUserDto(user);
+        }
+
+        
+        public async Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            var product = await _productRepository.GetProductByIdAsync(productId);
+
+           
+            if (user == null || product == null) return false;
+
+            var totalPrice = product.UnitPrice * quantity;
+
+           
+            if (!user.HasSufficientBalance(totalPrice) || !product.HasSufficientStock(quantity))
+                return false;
+
+            
+            user.DebitBalance(totalPrice);
+            product.DebitStock(quantity);
+
+           
+            await _userRepository.UpdateUserAsync(user);
+            await _productRepository.UpdateProductAsync(product);
+
+            return true;
+        }
+
+        
+        private UserDto MapToUserDto(User user)
+        {
             return new UserDto
             {
                 Id = user.Id,
@@ -35,7 +71,7 @@ namespace FixedAssets.Application.Services
                     OrderItems = o.OrderItems?.Select(oi => new OrderItemDto
                     {
                         ProductId = oi.ProductId,
-                        ProductName = oi.Product.Name,  
+                        ProductName = oi.Product?.Name, 
                         Quantity = oi.Quantity,
                         UnitPrice = oi.UnitPrice
                     }).ToList()
@@ -47,31 +83,6 @@ namespace FixedAssets.Application.Services
                     Quantity = a.Quantity
                 }).ToList() ?? new List<UserAssetDto>()
             };
-        }
-
-
-
-
-        public async Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity)
-        {
-            var user = await _userRepository.GetUserByIdAsync(userId);
-            var product = await _productRepository.GetProductByIdAsync(productId);
-
-            if (user == null || product == null) return false;
-
-            var totalPrice = product.UnitPrice * quantity;
-
-            if (!user.HasSufficientBalance(totalPrice) || !product.HasSufficientStock(quantity))
-                return false;
-
-            user.DebitBalance(totalPrice);
-            product.DebitStock(quantity);
-
-            // Atualiza o usuário e o produto após a compra
-            await _userRepository.UpdateUserAsync(user);
-            await _productRepository.UpdateProductAsync(product);
-
-            return true;
         }
     }
 }

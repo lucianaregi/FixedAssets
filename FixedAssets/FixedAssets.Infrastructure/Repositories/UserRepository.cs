@@ -1,41 +1,63 @@
-﻿using System.Text.Json;
-using FixedAssets.Domain.Entities;
+﻿using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
+using FixedAssets.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        private readonly string _filePath = "..\\FixedAssets.Infrastructure\\Data\\users.json"; // Caminho do arquivo JSON de usuários
+        private readonly ApplicationDbContext _context;
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
-            if (!File.Exists(_filePath)) return null;
-
-            var jsonData = await File.ReadAllTextAsync(_filePath);
-            var users = JsonSerializer.Deserialize<List<User>>(jsonData);
-            return users.FirstOrDefault(u => u.Id == id);
+            _context = context;
         }
 
+       
+        public async Task<User?> GetUserByIdAsync(int id)
+        {
+            return await _context.Users
+                .Include(u => u.Assets)
+                .Include(u => u.Orders)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+       
         public async Task UpdateUserAsync(User user)
         {
-            var users = await GetAllUsersAsync();
-            var userToUpdate = users.FirstOrDefault(u => u.Id == user.Id);
-            if (userToUpdate != null)
-            {
-                userToUpdate.Balance = user.Balance;
-                userToUpdate.Assets = user.Assets;
-                var jsonData = JsonSerializer.Serialize(users);
-                await File.WriteAllTextAsync(_filePath, jsonData);
-            }
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
 
-        private async Task<List<User>> GetAllUsersAsync()
+       
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            if (!File.Exists(_filePath)) return new List<User>();
+            return await _context.Users
+                .Include(u => u.Assets)
+                .Include(u => u.Orders)
+                .ToListAsync();
+        }
 
-            var jsonData = await File.ReadAllTextAsync(_filePath);
-            return JsonSerializer.Deserialize<List<User>>(jsonData);
+        
+        public async Task AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
+        
+        public async Task DeleteUserAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

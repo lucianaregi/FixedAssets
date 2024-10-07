@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Interfaces
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IGenericRepository<Order>
     {
        Task<List<Order>> GetOrdersByUserIdWithProduct(int userId);
-        Task CreateOrderAsync(Order order);
+       Task CreateOrderAsync(Order order);
+
     }
 }
 

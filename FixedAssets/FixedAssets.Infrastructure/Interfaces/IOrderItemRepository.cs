@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Interfaces
 {
-    public interface IOrderItemRepository
+    public interface IOrderItemRepository : IGenericRepository<OrderItem>
     {
         Task<List<OrderItem>> GetOrderItemsByOrderId(int orderId);
-        Task AddOrderItem(OrderItem orderItem);
+        Task AddOrderItemAsync(OrderItem orderItem);
     }
 }

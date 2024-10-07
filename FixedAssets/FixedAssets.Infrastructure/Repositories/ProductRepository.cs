@@ -1,38 +1,56 @@
-﻿using System.Reflection;
-using System.Text.Json;
-using FixedAssets.Domain.Entities;
+﻿using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
+using FixedAssets.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
-        private readonly string _filePath = "..\\FixedAssets.Infrastructure\\Data\\products.json";
+        private readonly ApplicationDbContext _context;
 
+        public ProductRepository(ApplicationDbContext context) : base(context)
+        {
+            _context = context;
+        }
 
+        
         public async Task<List<Product>> GetAllProductsAsync()
         {
-            if (!File.Exists(_filePath)) return new List<Product>();
-
-            var jsonData = await File.ReadAllTextAsync(_filePath);
-            return JsonSerializer.Deserialize<List<Product>>(jsonData);
+            return await _context.Products.ToListAsync();
         }
 
+        
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            var products = await GetAllProductsAsync();
-            return products.FirstOrDefault(p => p.Id == id);
+            return await _context.Products.FindAsync(id);
         }
 
+       
         public async Task UpdateProductAsync(Product product)
         {
-            var products = await GetAllProductsAsync();
-            var productToUpdate = products.FirstOrDefault(p => p.Id == product.Id);
-            if (productToUpdate != null)
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+        }
+
+        
+        public async Task AddProductAsync(Product product)
+        {
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
+        }
+
+       
+        public async Task DeleteProductAsync(int productId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            if (product != null)
             {
-                productToUpdate.Stock = product.Stock;
-                var jsonData = JsonSerializer.Serialize(products);
-                await File.WriteAllTextAsync(_filePath, jsonData);
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
             }
         }
     }

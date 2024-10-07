@@ -5,7 +5,6 @@ using FixedAssets.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FixedAssets.Application.Services
@@ -23,33 +22,33 @@ namespace FixedAssets.Application.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task<bool> ProcessOrder(OrderDto orderDto)
+        public async Task<bool> ProcessOrderAsync(OrderDto orderDto)
         {
-            // Obter usuário e produto
+            
             var user = await _userRepository.GetUserByIdAsync(orderDto.UserId);
             if (user == null) return false;
 
-            // Validações de estoque e saldo para cada item do pedido
+            
             foreach (var orderItemDto in orderDto.OrderItems)
             {
                 var product = await _productRepository.GetProductByIdAsync(orderItemDto.ProductId);
-                if (product == null || product.Stock < orderItemDto.Quantity || user.Balance < product.UnitPrice * orderItemDto.Quantity)
+                if (product == null || !product.HasSufficientStock(orderItemDto.Quantity) || !user.HasSufficientBalance(product.UnitPrice * orderItemDto.Quantity))
                 {
-                    return false;  // Se alguma validação falhar, retorna false
+                    return false; 
                 }
 
-                // Atualiza o saldo do usuário e o estoque do produto
+                
                 user.DebitBalance(product.UnitPrice * orderItemDto.Quantity);
                 product.DebitStock(orderItemDto.Quantity);
 
-                // Atualiza o banco de dados para o produto
+                
                 await _productRepository.UpdateProductAsync(product);
             }
 
-            // Atualiza o banco de dados para o usuário
+           
             await _userRepository.UpdateUserAsync(user);
 
-            // Cria uma nova ordem de compra com os itens do pedido
+            
             var newOrder = new Order
             {
                 UserId = user.Id,
@@ -62,18 +61,30 @@ namespace FixedAssets.Application.Services
                 }).ToList()
             };
 
-            // Salva a ordem no banco de dados
+            
             await _orderRepository.CreateOrderAsync(newOrder);
 
             return true;
         }
 
-
-
-        public async Task<List<Order>> GetOrdersByUserId(int userId)
+        public async Task<List<OrderDto>> GetOrdersByUserIdAsync(int userId)
         {
-            return await _orderRepository.GetOrdersByUserIdWithProduct(userId);
+            var orders = await _orderRepository.GetOrdersByUserIdWithProduct(userId);
+
             
+            return orders.Select(order => new OrderDto
+            {
+                Id = order.Id,
+                UserId = order.UserId,
+                OrderDate = order.OrderDate,
+                OrderItems = order.OrderItems.Select(item => new OrderItemDto
+                {
+                    ProductId = item.ProductId,
+                    ProductName = item.Product.Name,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice
+                }).ToList()
+            }).ToList();
         }
     }
 }

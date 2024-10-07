@@ -36,6 +36,12 @@ builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 // Adicionar serviços de controle
 builder.Services.AddControllers();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+});
+
+
 var app = builder.Build();
 
 // Configurações de pipeline de requisições HTTP

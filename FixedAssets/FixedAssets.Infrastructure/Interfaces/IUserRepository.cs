@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IGenericRepository<User>
     {
-        Task<User> GetUserByIdAsync(int id); // Retorna um usuário específico por ID
-        Task UpdateUserAsync(User user);     // Atualiza o saldo do usuário após a compra
+        Task<User?> GetUserByIdAsync(int id);
+        Task UpdateUserAsync(User user);     
     }
 }

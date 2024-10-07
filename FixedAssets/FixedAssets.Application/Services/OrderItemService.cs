@@ -1,4 +1,5 @@
 ﻿using FixedAssets.Application.Interfaces;
+using FixedAssets.Application.DTOs;
 using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
 using System.Collections.Generic;
@@ -15,14 +16,36 @@ namespace FixedAssets.Application.Services
             _orderItemRepository = orderItemRepository;
         }
 
-        public async Task<List<OrderItem>> GetOrderItemsByOrderId(int orderId)
+       
+        public async Task<List<OrderItemDto>> GetOrderItemsByOrderIdAsync(int orderId)
         {
-            return await _orderItemRepository.GetOrderItemsByOrderId(orderId);
+            var orderItems = await _orderItemRepository.GetOrderItemsByOrderId(orderId);
+
+            
+            var orderItemDtos = orderItems?.ConvertAll(item => new OrderItemDto
+            {
+                ProductId = item.ProductId,
+                ProductName = item.Product?.Name,  
+                Quantity = item.Quantity,
+                UnitPrice = item.UnitPrice
+            });
+
+            return orderItemDtos ?? new List<OrderItemDto>();
         }
 
-        public async Task AddOrderItem(OrderItem orderItem)
+        
+        public async Task AddOrderItemAsync(OrderItemDto orderItemDto)
         {
-            await _orderItemRepository.AddOrderItem(orderItem);
+            
+            var orderItem = new OrderItem
+            {
+                ProductId = orderItemDto.ProductId,
+                Quantity = orderItemDto.Quantity,
+                UnitPrice = orderItemDto.UnitPrice
+                
+            };
+
+            await _orderItemRepository.AddOrderItemAsync(orderItem);
         }
     }
 }

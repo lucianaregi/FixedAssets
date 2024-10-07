@@ -9,8 +9,8 @@ namespace FixedAssets.Application.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDto> GetUserByIdAsync(int userId); // Obtém detalhes de um usuário específico
-        Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity); // Processa a compra de um produto
+        Task<UserDto> GetUserByIdAsync(int userId);
+        Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity);
     }
 }
 

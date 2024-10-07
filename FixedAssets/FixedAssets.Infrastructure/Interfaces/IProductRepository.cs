@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FixedAssets.Infrastructure.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductRepository : IGenericRepository<Product>
     {
-        Task<List<Product>> GetAllProductsAsync(); 
-        Task<Product> GetProductByIdAsync(int id); 
+        Task<List<Product>> GetAllProductsAsync();
+        Task<Product> GetProductByIdAsync(int id);
         Task UpdateProductAsync(Product product);  
     }
 }
