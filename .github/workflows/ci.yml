@@ -77,7 +77,7 @@ jobs:
         run: dotnet tool install --global dotnet-sonarscanner
 
       - name: Add .NET tools to PATH
-        run: echo "PATH=\$PATH:${HOME}/.dotnet/tools" >> $GITHUB_ENV
+        run: echo "${HOME}/.dotnet/tools" >> $GITHUB_ENV
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v2
@@ -101,6 +101,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          dotnet-sonarscanner begin /k:lucianaregi_FixedAssets /o:luciana-rocha /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet-sonarscanner begin /k:"lucianaregi_FixedAssets" /o:"luciana-rocha" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
           dotnet build ./FixedAssets/FixedAssets.sln
-          /bin/bash -c "dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'"
+          bash -c "dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'"
