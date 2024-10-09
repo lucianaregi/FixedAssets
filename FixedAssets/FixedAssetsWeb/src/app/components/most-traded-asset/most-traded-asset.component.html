@@ -4,7 +4,7 @@
   <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
 
   <div class="row">
-    <div class="col-md-4" *ngFor="let asset of mostTradedAssets">
+    <div class="col-md-3" *ngFor="let asset of mostTradedAssets">
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">{{ asset.name }}</h5>
@@ -19,4 +19,22 @@
       </div>
     </div>
   </div>
+  <div class="chart col-md-4">
+    <ngx-charts-bar-vertical [view]="view"
+                             [animations]="false"
+                             [scheme]="colorScheme"
+                             [results]="chartData"
+                             [gradient]="gradient"
+                             [xAxis]="showXAxis"
+                             [yAxis]="showYAxis"
+                             [legend]="showLegend"
+                             [showXAxisLabel]="showXAxisLabel"
+                             [showYAxisLabel]="showYAxisLabel"
+                             [xAxisLabel]="xAxisLabel"
+                             [yAxisLabel]="yAxisLabel"
+                             (select)="onSelect($event)">
+    </ngx-charts-bar-vertical>
+  </div>
+ 
+
 </div>

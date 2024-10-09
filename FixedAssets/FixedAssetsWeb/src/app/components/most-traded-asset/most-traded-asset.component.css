@@ -31,3 +31,7 @@ button {
 input {
   height: 38px; 
 }
+
+.chart{
+    margin-left: 500px;
+}
