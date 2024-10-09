@@ -60,6 +60,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "FixedAssets v1");
+});
+
+
+
 app.UseCors("CorsPolicy");
 
 app.MapControllers();
