@@ -1,5 +1,6 @@
 ﻿using FixedAssets.Application.DTOs;
 using FixedAssets.Application.Interfaces;
+using FixedAssets.Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Linq;
@@ -20,35 +21,48 @@ namespace FixedAssets.Api.Controllers
             _orderItemService = orderItemService;
         }
 
-        /// <summary>
-        /// Processa uma nova ordem de compra.
-        /// </summary>
-        /// <param name="orderDto">Dados do pedido.</param>
-        /// <returns>Resultado da transação.</returns>
         [HttpPost("order")]
         [SwaggerOperation(Summary = "Processa uma nova ordem de compra", Description = "Recebe os dados da ordem e realiza o processamento da compra.")]
-        [SwaggerResponse(200, "Compra realizada com sucesso.")]
-        [SwaggerResponse(400, "Dados inválidos ou erro ao processar a compra.")]
-        [SwaggerResponse(500, "Erro interno no servidor.")]
+        [SwaggerResponse(200, "Compra realizada com sucesso.", typeof(OrderProcessingResult))]
+        [SwaggerResponse(400, "Dados inválidos ou erro ao processar a compra.", typeof(OrderProcessingResult))]
+        [SwaggerResponse(500, "Erro interno no servidor.", typeof(OrderProcessingResult))]
         public async Task<IActionResult> ProcessOrder([FromBody] OrderDto orderDto)
         {
             // Validações de entrada
             if (orderDto == null || orderDto.OrderItems == null || !orderDto.OrderItems.Any())
-                return BadRequest("Dados inválidos.");
+                return BadRequest(new OrderProcessingResult
+                {
+                    Success = false,
+                    Message = "Dados inválidos.",
+                    Errors = new List<string> { "Os itens do pedido não foram fornecidos corretamente." }
+                });
 
             foreach (var item in orderDto.OrderItems)
             {
                 if (item.Quantity <= 0)
-                    return BadRequest($"Quantidade inválida para o produto {item.ProductId}.");
+                {
+                    return BadRequest(new OrderProcessingResult
+                    {
+                        Success = false,
+                        Message = $"Quantidade inválida para o produto {item.ProductId}.",
+                        Errors = new List<string> { $"Quantidade inválida para o produto {item.ProductId}." }
+                    });
+                }
             }
 
-            // Processa a ordem
+            // Processa a ordem e retorna o resultado
             var result = await _orderService.ProcessOrderAsync(orderDto);
-            if (!result)
-                return BadRequest("Erro ao processar a compra.");
 
-            return Ok("Compra realizada com sucesso.");
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
         }
+
 
         /// <summary>
         /// Busca os itens de uma ordem específica.

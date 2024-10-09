@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FixedAssets.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241007115037_SeedOrderItemsData")]
-    partial class SeedOrderItemsData
+    [Migration("20241009021056_SeedMostTradedAssets")]
+    partial class SeedMostTradedAssets
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,29 @@ namespace FixedAssets.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("FixedAssets.Domain.Entities.MostTradedAsset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("CurrentValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalTrades")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MostTradedAssets");
+                });
 
             modelBuilder.Entity("FixedAssets.Domain.Entities.Order", b =>
                 {
@@ -97,6 +120,32 @@ namespace FixedAssets.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("FixedAssets.Domain.Entities.ToroAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ToroAccounts");
+                });
+
             modelBuilder.Entity("FixedAssets.Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -112,7 +161,15 @@ namespace FixedAssets.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -173,6 +230,17 @@ namespace FixedAssets.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("FixedAssets.Domain.Entities.ToroAccount", b =>
+                {
+                    b.HasOne("FixedAssets.Domain.Entities.User", "User")
+                        .WithOne("ToroAccount")
+                        .HasForeignKey("FixedAssets.Domain.Entities.ToroAccount", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FixedAssets.Domain.Entities.UserAsset", b =>
                 {
                     b.HasOne("FixedAssets.Domain.Entities.Product", "Product")
@@ -209,6 +277,9 @@ namespace FixedAssets.Infrastructure.Migrations
                     b.Navigation("Assets");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("ToroAccount")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

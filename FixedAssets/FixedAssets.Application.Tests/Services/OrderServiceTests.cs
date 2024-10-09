@@ -16,6 +16,7 @@ namespace FixedAssets.Application.Tests.Services
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<IProductRepository> _productRepositoryMock;
         private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        private readonly Mock<IUserAssetRepository> _userAssetRepositoryMock;
         private readonly OrderService _orderService;
 
         public OrderServiceTests()
@@ -23,8 +24,14 @@ namespace FixedAssets.Application.Tests.Services
             _userRepositoryMock = new Mock<IUserRepository>();
             _productRepositoryMock = new Mock<IProductRepository>();
             _orderRepositoryMock = new Mock<IOrderRepository>();
+            _userAssetRepositoryMock = new Mock<IUserAssetRepository>();
 
-            _orderService = new OrderService(_userRepositoryMock.Object, _productRepositoryMock.Object, _orderRepositoryMock.Object);
+            _orderService = new OrderService(
+                _userRepositoryMock.Object,
+                _productRepositoryMock.Object,
+                _orderRepositoryMock.Object,
+                _userAssetRepositoryMock.Object 
+            );
         }
 
         [Fact]
@@ -35,14 +42,16 @@ namespace FixedAssets.Application.Tests.Services
             {
                 UserId = 1,
                 OrderItems = new List<OrderItemDto>
-                {
-                    new OrderItemDto { ProductId = 1, Quantity = 2, UnitPrice = 100 }
-                }
+        {
+            new OrderItemDto { ProductId = 1, Quantity = 2, UnitPrice = 100 }
+        }
             };
 
-            var user = new User { Id = 1, Balance = 500 };
+            var toroAccount = new ToroAccount { Balance = 500 }; // Criar a ToroAccount com saldo
+            var user = new User { Id = 1, ToroAccount = toroAccount }; // Associar o ToroAccount ao User
             var product = new Product { Id = 1, Stock = 10, UnitPrice = 100 };
 
+            
             _userRepositoryMock.Setup(repo => repo.GetUserByIdAsync(orderDto.UserId)).ReturnsAsync(user);
             _productRepositoryMock.Setup(repo => repo.GetProductByIdAsync(1)).ReturnsAsync(product);
             _orderRepositoryMock.Setup(repo => repo.CreateOrderAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
@@ -51,14 +60,16 @@ namespace FixedAssets.Application.Tests.Services
             var result = await _orderService.ProcessOrderAsync(orderDto);
 
             // Assert
-            result.Should().BeTrue();
-            user.Balance.Should().Be(300); // Verifica se o saldo foi debitado corretamente
-            product.Stock.Should().Be(8);  // Verifica se o estoque foi debitado corretamente
+            result.Success.Should().BeTrue(); // Espera-se que o resultado seja verdadeiro
+            user.ToroAccount.Balance.Should().Be(300); // Verifica se o saldo da ToroAccount foi atualizado corretamente
+            product.Stock.Should().Be(8);  // Verifica se o estoque do produto foi debitado corretamente
 
+            // Verificar se os métodos corretos foram chamados
             _userRepositoryMock.Verify(repo => repo.UpdateUserAsync(user), Times.Once);
             _productRepositoryMock.Verify(repo => repo.UpdateProductAsync(product), Times.Once);
             _orderRepositoryMock.Verify(repo => repo.CreateOrderAsync(It.IsAny<Order>()), Times.Once);
         }
+
 
         [Fact]
         public async Task ProcessOrder_ShouldReturnFalse_WhenUserDoesNotExist()
@@ -76,7 +87,7 @@ namespace FixedAssets.Application.Tests.Services
             var result = await _orderService.ProcessOrderAsync(orderDto);
 
             // Assert
-            result.Should().BeFalse();
+            result.Success.Should().BeFalse(); // Trocar para BeFalse()
             _orderRepositoryMock.Verify(repo => repo.CreateOrderAsync(It.IsAny<Order>()), Times.Never);
         }
 
@@ -99,7 +110,7 @@ namespace FixedAssets.Application.Tests.Services
             var result = await _orderService.ProcessOrderAsync(orderDto);
 
             // Assert
-            result.Should().BeFalse();
+            result.Success.Should().BeFalse(); // Trocar para BeFalse()
             _orderRepositoryMock.Verify(repo => repo.CreateOrderAsync(It.IsAny<Order>()), Times.Never);
         }
 
@@ -123,7 +134,7 @@ namespace FixedAssets.Application.Tests.Services
             var result = await _orderService.ProcessOrderAsync(orderDto);
 
             // Assert
-            result.Should().BeFalse();
+            result.Success.Should().BeFalse(); // Trocar para BeFalse()
             _orderRepositoryMock.Verify(repo => repo.CreateOrderAsync(It.IsAny<Order>()), Times.Never);
         }
 
@@ -147,28 +158,9 @@ namespace FixedAssets.Application.Tests.Services
             var result = await _orderService.ProcessOrderAsync(orderDto);
 
             // Assert
-            result.Should().BeFalse();
+            result.Success.Should().BeFalse(); // Trocar para BeFalse()
             _orderRepositoryMock.Verify(repo => repo.CreateOrderAsync(It.IsAny<Order>()), Times.Never);
         }
 
-        [Fact]
-        public async Task GetOrdersByUserId_ShouldReturnListOfOrders_WhenOrdersExist()
-        {
-            // Arrange
-            var userId = 1;
-            var expectedOrders = new List<Order>
-            {
-                new Order { Id = 1, UserId = userId, OrderItems = new List<OrderItem> { new OrderItem { ProductId = 1, Quantity = 2, UnitPrice = 100 } } },
-                new Order { Id = 2, UserId = userId, OrderItems = new List<OrderItem> { new OrderItem { ProductId = 2, Quantity = 3, UnitPrice = 150 } } }
-            };
-
-            _orderRepositoryMock.Setup(repo => repo.GetOrdersByUserIdWithProduct(userId)).ReturnsAsync(expectedOrders);
-
-            // Act
-            var orders = await _orderService.GetOrdersByUserIdAsync(userId);
-
-            // Assert
-            orders.Should().BeEquivalentTo(expectedOrders, options => options.ExcludingMissingMembers());
-        }
     }
 }

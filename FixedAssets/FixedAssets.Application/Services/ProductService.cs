@@ -16,7 +16,8 @@ namespace FixedAssets.Application.Services
         public async Task<List<ProductDto>> GetProductsAsync()
         {
             var products = await _productRepository.GetAllProductsAsync();
-            return products.Select(p => new ProductDto
+            return products.OrderByDescending(p => p.Tax)
+                .Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,

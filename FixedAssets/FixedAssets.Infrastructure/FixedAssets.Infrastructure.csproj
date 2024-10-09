@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20241007020147_InitialCreate.cs" />
+    <Compile Remove="Migrations\20241007020147_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20241007112817_AddInitialData.cs" />
+    <Compile Remove="Migrations\20241007112817_AddInitialData.Designer.cs" />
+    <Compile Remove="Migrations\20241007115037_SeedOrderItemsData.cs" />
+    <Compile Remove="Migrations\20241007115037_SeedOrderItemsData.Designer.cs" />
+    <Compile Remove="Migrations\20241007224107_SeedProducts.cs" />
+    <Compile Remove="Migrations\20241007224107_SeedProducts.Designer.cs" />
+    <Compile Remove="Migrations\20241008180124_AddEmailAndPasswordToUsers.cs" />
+    <Compile Remove="Migrations\20241008180124_AddEmailAndPasswordToUsers.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
@@ -19,6 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FixedAssets.Domain\FixedAssets.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,33 @@
+.card {
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 18px;
+}
+
+.card-text {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+button {
+  height: 38px; 
+}
+
+input {
+  height: 38px; 
+}

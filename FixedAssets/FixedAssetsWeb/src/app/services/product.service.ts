@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { environment } from '../../environments/environment';  
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = '/api/product'; 
+  private apiUrl = `${environment.apiUrl}/product`;  
 
   constructor(private http: HttpClient) { }
 
@@ -18,8 +19,6 @@ export class ProductService {
 
   // Método para buscar um produto pelo ID
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`http://localhost:5212/api/products/${id}`);
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
-
-
 }

@@ -11,6 +11,8 @@ namespace FixedAssets.Application.Interfaces
     {
         Task<UserDto> GetUserByIdAsync(int userId);
         Task<bool> ProcessPurchaseAsync(int userId, int productId, int quantity);
+        Task<UserDto?> LoginAsync(string email, string password);
+        Task<UserDto?> GetUserByEmailAsync(string email);
     }
 }
 

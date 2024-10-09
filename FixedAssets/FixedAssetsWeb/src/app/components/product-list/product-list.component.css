@@ -32,3 +32,7 @@ a {
     text-decoration: underline;
     color: #0056b3;
   }
+
+.table {
+    margin-top:15px;
+}

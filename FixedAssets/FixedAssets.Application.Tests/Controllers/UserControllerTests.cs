@@ -12,12 +12,24 @@ namespace FixedAssets.Application.Tests.Controllers
     public class UserControllerTests
     {
         private readonly Mock<IUserService> _userServiceMock;
+        private readonly Mock<IProductService> _productServiceMock;
+        private readonly Mock<IOrderService> _orderServiceMock;
+        private readonly Mock<IToroAccountService> _toroAccountServiceMock;
         private readonly UserController _controller;
 
         public UserControllerTests()
         {
             _userServiceMock = new Mock<IUserService>();
-            _controller = new UserController(_userServiceMock.Object, null, null);
+            _productServiceMock = new Mock<IProductService>();
+            _orderServiceMock = new Mock<IOrderService>();
+            _toroAccountServiceMock = new Mock<IToroAccountService>();
+
+            _controller = new UserController(
+                _userServiceMock.Object,
+                _productServiceMock.Object,
+                _orderServiceMock.Object,
+                _toroAccountServiceMock.Object
+            );
         }
 
         [Fact]

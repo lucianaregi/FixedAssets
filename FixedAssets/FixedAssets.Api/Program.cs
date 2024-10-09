@@ -24,13 +24,18 @@ builder.Services.AddCors(options =>
 
 // Configurar a injeção de dependência para os serviços e repositórios
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemService, OrderItemService>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IToroAccountRepository, ToroAccountRepository>();
+builder.Services.AddScoped<IToroAccountService, ToroAccountService>();
+builder.Services.AddScoped<IUserAssetRepository, UserAssetRepository>();
+builder.Services.AddScoped<IMostTradedAssetService, MostTradedAssetService>();
+builder.Services.AddScoped<IMostTradedAssetRepository, MostTradedAssetRepository>();
 
 
 // Adicionar serviços de controle

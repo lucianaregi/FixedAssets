@@ -1,13 +1,37 @@
-<h2>Histórico de Compras</h2>
-<div *ngIf="message">{{ message }}</div>
+<div class="container mt-4">
+ 
+  <div>
+    <ul>
+      <li><a [routerLink]="['/produtos', userId]">Produtos</a></li>
+    </ul>
+  </div>
 
-<ul *ngIf="purchases.length > 0; else noPurchases">
-  <li *ngFor="let purchase of purchases">
-    Produto: {{ purchase.productName }} - Quantidade: {{ purchase.quantity }} - Total: {{ purchase.totalPrice | currency }}
-  </li>
-</ul>
+  <h2 class="text-center">Meus Ativos</h2>
 
-<ng-template #noPurchases>
-  <p>Nenhuma compra realizada.</p>
-</ng-template>
+  <!-- Exibição de mensagens -->
+  <div *ngIf="message" class="alert alert-info" role="alert">
+    {{ message }}
+  </div>
+
+  <!-- Lista de compras -->
+  <ul *ngIf="purchases.length > 0; else noPurchases" class="list-group">
+    <li *ngFor="let purchase of purchases" class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>Produto:</strong> {{ purchase.productName }} <br>
+        <strong>Quantidade:</strong> {{ purchase.quantity }}
+      </div>
+      <span class="badge bg-primary rounded-pill">
+        {{ purchase.unitPrice | currency:'BRL':'symbol':'1.2-2' }}
+      </span>
+    </li>
+  </ul>
+
+  <!-- Template para quando não há compras -->
+  <ng-template #noPurchases>
+    <div class="alert alert-warning mt-3" role="alert">
+      Nenhuma compra realizada.
+    </div>
+  </ng-template>
+</div>
+
 

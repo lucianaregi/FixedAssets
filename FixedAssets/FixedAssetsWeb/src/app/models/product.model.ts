@@ -1,3 +1,6 @@
+import { OrderItem } from "./order-item.model";
+import { UserAsset } from "./user-asset.model";
+
 export interface Product {
   id: number;
   name: string;
@@ -5,6 +8,8 @@ export interface Product {
   unitPrice: number;
   stock: number;
   tax: number;
+  orderItems: OrderItem[];
+  userAssets: UserAsset[];
 }
 
 

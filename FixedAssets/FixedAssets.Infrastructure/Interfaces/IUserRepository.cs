@@ -10,6 +10,7 @@ namespace FixedAssets.Infrastructure.Interfaces
     public interface IUserRepository : IGenericRepository<User>
     {
         Task<User?> GetUserByIdAsync(int id);
-        Task UpdateUserAsync(User user);     
+        Task UpdateUserAsync(User user);
+        Task<User?> GetUserByEmailAsync(string email);
     }
 }

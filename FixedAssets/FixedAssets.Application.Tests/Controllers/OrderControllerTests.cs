@@ -7,6 +7,7 @@ using FixedAssets.Application.Interfaces;
 using FixedAssets.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using FixedAssets.Application.Responses;
 
 namespace FixedAssets.Application.Tests.Controllers
 {
@@ -31,13 +32,20 @@ namespace FixedAssets.Application.Tests.Controllers
             {
                 UserId = 1,
                 OrderItems = new List<OrderItemDto>
-                {
-                    new OrderItemDto { ProductId = 1, Quantity = 2, UnitPrice = 100 }
-                }
+        {
+            new OrderItemDto { ProductId = 1, Quantity = 2, UnitPrice = 100 }
+        }
             };
 
-            _orderServiceMock.Setup(service => service.ProcessOrderAsync(orderDto))
-                .ReturnsAsync(true);
+            var orderProcessingResult = new OrderProcessingResult
+            {
+                Success = true,
+                Message = "Compra realizada com sucesso!"
+            };
+
+            _orderServiceMock
+                .Setup(service => service.ProcessOrderAsync(orderDto))
+                .ReturnsAsync(orderProcessingResult);
 
             // Act
             var result = await _controller.ProcessOrder(orderDto);
@@ -46,8 +54,12 @@ namespace FixedAssets.Application.Tests.Controllers
             var okResult = result as OkObjectResult;
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);
-            okResult.Value.Should().Be("Compra realizada com sucesso.");
+            var returnedResult = okResult.Value as OrderProcessingResult;
+            returnedResult.Should().NotBeNull();
+            returnedResult.Message.Should().Be(orderProcessingResult.Message);  // Verifique se a mensagem está correta
         }
+
+
 
         [Fact]
         public async Task ProcessOrder_ShouldReturnBadRequest_WhenOrderIsInvalid()

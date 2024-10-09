@@ -7,6 +7,7 @@ using FixedAssets.Domain.Entities;
 using FixedAssets.Infrastructure.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FixedAssets.Application.Interfaces;
 
 namespace FixedAssets.Application.Tests.Services
 {
@@ -14,14 +15,16 @@ namespace FixedAssets.Application.Tests.Services
     {
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<IProductRepository> _productRepositoryMock;
+        private readonly Mock<IToroAccountService> _toroAccountServiceMock; // Adiciona mock para o ToroAccountService
         private readonly UserService _userService;
 
         public UserServiceTests()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
             _productRepositoryMock = new Mock<IProductRepository>();
+            _toroAccountServiceMock = new Mock<IToroAccountService>(); // Inicializa mock
 
-            _userService = new UserService(_userRepositoryMock.Object, _productRepositoryMock.Object);
+            _userService = new UserService(_userRepositoryMock.Object, _productRepositoryMock.Object, _toroAccountServiceMock.Object);
         }
 
         [Fact]
@@ -33,7 +36,7 @@ namespace FixedAssets.Application.Tests.Services
             {
                 Id = userId,
                 Name = "Test User",
-                Balance = 1000,
+                Balance = 0,
                 CPF = "123.456.789-00",
                 Orders = new List<Order>(),
                 Assets = new List<UserAsset>()
@@ -48,7 +51,7 @@ namespace FixedAssets.Application.Tests.Services
                 Name = expectedUser.Name,
                 Balance = expectedUser.Balance,
                 CPF = expectedUser.CPF,
-                Orders = new List<OrderDto>(),  
+                Orders = new List<OrderDto>(),
                 Assets = new List<UserAssetDto>()
             };
 

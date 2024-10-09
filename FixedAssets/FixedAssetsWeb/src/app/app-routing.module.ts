@@ -2,12 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { PurchaseHistoryComponent } from './components/purchase-history/purchase-history.component';
+import { LoginComponent } from './components/login/login.component';
+import { MostTradedAssetComponent } from './components/most-traded-asset/most-traded-asset.component';
 
 export const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { path: 'produtos/:id', component: ProductListComponent },  // Aceita o parâmetro id
   { path: 'produtos', component: ProductListComponent },
-  { path: 'produtos/:id', loadComponent: () => import('./components/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
-  { path: 'historico-compras', component: PurchaseHistoryComponent }, 
-  { path: '', redirectTo: '/produtos', pathMatch: 'full' }
+  { path: 'historico-compras/:userId', component: PurchaseHistoryComponent },
+  { path: 'most-traded-assets', component: MostTradedAssetComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }  // Redireciona para login por padrão
 ];
 
 @NgModule({

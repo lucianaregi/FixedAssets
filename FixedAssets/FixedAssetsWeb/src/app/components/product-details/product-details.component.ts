@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { Product } from '../../models/product.model'; 
+import { Product } from '../../models/product.model';
+import { environment } from '../../../environments/environment';  // Importa o ambiente
 
 @Component({
   selector: 'app-product-details',
@@ -14,7 +15,7 @@ import { Product } from '../../models/product.model';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  product: Product | null = null;  
+  product: Product | null = null;
   message: string | undefined;
 
   constructor(
@@ -43,30 +44,28 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  buyProduct(): void {
+  async buyProduct(): Promise<void> {
     if (!this.product) {
       this.message = 'Produto não encontrado.';
       return;
     }
 
     const order = {
-      userId: 1,           // ID do usuário fixo por enquanto
+      userId: 3, 
       productId: this.product.id,
-      quantity: 1          // Quantidade desejada
+      quantity: 1 
     };
 
-    this.http.post('http://localhost:5212/api/user/order', order).subscribe(
-      () => {
-        this.message = 'Compra realizada com sucesso!';
-      },
-      error => {
-        if (error.status === 400 && error.error === 'Saldo insuficiente.') {
-          this.message = 'Saldo insuficiente para realizar a compra.';
-        } else {
-          console.error('Erro ao processar a compra:', error);
-          this.message = 'Erro ao processar a compra.';
-        }
-      }
-    );
+    try {
+      // Fazer a requisição POST para o backend
+      const response = await this.http.post<string>(`${environment.apiUrl}/user/order`, order).toPromise();
+
+      // Exibe a mensagem recebida do backend (sucesso ou erro)
+      this.message = response;
+    } catch (error) {
+      console.error('Erro ao processar a compra:', error);
+      this.message = 'Erro ao processar a compra. Por favor, tente novamente.';
+    }
   }
+
 }

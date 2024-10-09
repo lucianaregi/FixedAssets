@@ -13,6 +13,8 @@ namespace FixedAssets.Infrastructure.Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<UserAsset> UserAssets { get; set; }
+        public DbSet<ToroAccount> ToroAccounts { get; set; }
+        public DbSet<MostTradedAsset> MostTradedAssets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -55,19 +57,39 @@ namespace FixedAssets.Infrastructure.Persistence
             // Configurações de tipo para propriedades decimal
             modelBuilder.Entity<User>()
                 .Property(u => u.Balance)
-                .HasColumnType("decimal(18,4)"); 
+                .HasColumnType("decimal(18,4)");
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.UnitPrice)
-                .HasColumnType("decimal(18,4)"); 
+                .HasColumnType("decimal(18,4)");
 
             modelBuilder.Entity<Product>()
                 .Property(p => p.Tax)
-                .HasColumnType("decimal(18,4)"); 
+                .HasColumnType("decimal(18,4)");
 
             modelBuilder.Entity<OrderItem>()
                 .Property(oi => oi.UnitPrice)
-                .HasColumnType("decimal(18,4)"); 
+                .HasColumnType("decimal(18,4)");
+
+            // Configuração para ToroAccount
+            modelBuilder.Entity<ToroAccount>()
+                .HasKey(ta => ta.Id); // Chave primária
+
+            modelBuilder.Entity<ToroAccount>()
+                .HasOne(ta => ta.User) // Relacionamento com a entidade User
+                .WithOne(u => u.ToroAccount) // Um-para-um entre User e ToroAccount
+                .HasForeignKey<ToroAccount>(ta => ta.UserId); // Chave estrangeira para UserId
+
+            modelBuilder.Entity<ToroAccount>()
+                .Property(ta => ta.Balance)
+                .HasColumnType("decimal(18,4)");
+
+            // Configuração para MostTradedAsset
+            modelBuilder.Entity<MostTradedAsset>().HasKey(mta => mta.Id);
+            modelBuilder.Entity<MostTradedAsset>()
+                .Property(mta => mta.CurrentValue)
+                .HasColumnType("decimal(18,2)");
         }
+
     }
 }

@@ -1,6 +1,70 @@
-<h2>Lista de Produtos</h2>
-<ul>
-  <li *ngFor="let product of products">
-    <a [routerLink]="['/produtos', product.id]">{{ product.name }}</a>
-  </li>
-</ul>
+<div class="container mt-4">
+  <div class="saldo-container">
+    <app-saldo></app-saldo>
+  </div>
+  <div>
+    <ul>
+      <li><a [routerLink]="['/historico-compras', userId]">Meus ativos</a></li>
+    </ul>
+  </div>
+  <h2>Lista de Produtos de Renda Fixa</h2>
+
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nome do Produto</th>
+        <th scope="col">Indexador</th>
+        <th scope="col">Taxa (%)</th>
+        <th scope="col">Preço Unitário</th>
+        <th scope="col">Estoque</th>
+        <th scope="col">Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.indexer }}</td>
+        <td>{{ product.tax | number:'1.1-2' }}%</td>
+        <td>{{ product.unitPrice | currency:'BRL':'symbol':'1.2-2' }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openPurchaseModal(product, purchaseModal)">
+            Comprar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mensagem de erro -->
+  <div *ngIf="message" class="alert mt-3" [ngClass]="isSuccess ? 'alert-success' : 'alert-danger'">{{ message }}</div>
+
+
+  <!-- Modal de compra -->
+  <ng-template #purchaseModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Comprar Produto</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p><strong>Produto:</strong> {{ selectedProduct?.name }}</p>
+      <p><strong>Preço Unitário:</strong> {{ selectedProduct?.unitPrice | currency:'BRL':'symbol':'1.2-2' }}</p>
+      <p><strong>Estoque Disponível:</strong> {{ selectedProduct?.stock }}</p>
+      <form>
+        <div class="mb-3">
+          <label for="quantityInput" class="form-label">Quantidade</label>
+          <input type="number" class="form-control" id="quantityInput" [(ngModel)]="quantity" name="quantity" min="1" [max]="selectedProduct?.stock || 1" required />
+        </div>
+      </form>
+      <!-- Exibe a mensagem de sucesso ou erro aqui dentro do modal -->
+      <div *ngIf="message" class="alert" [ngClass]="{ 'alert-success': isSuccess, 'alert-danger': !isSuccess }">
+        {{ message }}
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="purchaseProduct()">Confirmar Compra</button>
+    </div>
+  </ng-template>
+
+</div>

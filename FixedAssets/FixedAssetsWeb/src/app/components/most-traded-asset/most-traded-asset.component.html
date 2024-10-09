@@ -1,0 +1,22 @@
+<div class="container">
+  <h2>Top 5 Ativos Mais Negociados</h2>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div class="row">
+    <div class="col-md-4" *ngFor="let asset of mostTradedAssets">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ asset.name }}</h5>
+          <p class="card-text">
+            Valor Atual: {{ asset.currentValue | currency:'BRL' }}
+          </p>
+          <div class="input-group">
+            <input type="text" [(ngModel)]="asset.currentValue" class="form-control" [ngModel]="asset.currentValue | number:'1.2-2'" (ngModelChange)="onValueChange($event, asset)" />
+            <button class="btn btn-primary" (click)="updateAsset(asset)">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

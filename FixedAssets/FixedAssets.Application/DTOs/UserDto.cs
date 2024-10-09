@@ -8,6 +8,8 @@ namespace FixedAssets.Application.DTOs
         public string Name { get; set; }
         public string CPF { get; set; } 
         public decimal Balance { get; set; }
+        public string Email { get; set; }
+        public string PasswordHash { get; set; }
         public List<UserAssetDto> Assets { get; set; }
         public List<OrderDto> Orders { get; set; } 
     }
