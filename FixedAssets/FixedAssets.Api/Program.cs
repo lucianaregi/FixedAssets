@@ -12,6 +12,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
     b => b.MigrationsAssembly("FixedAssets.Infrastructure")));
 
+// Configuração explícita da URL
+//builder.WebHost.UseUrls(builder.Configuration["ASPNETCORE_URLS"] ?? "http://+:8080");
+
 // Adicionar CORS para permitir a comunicação entre frontend e backend
 builder.Services.AddCors(options =>
 {

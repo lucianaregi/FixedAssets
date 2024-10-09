@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: ./FixedAssetsWeb
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
   backend:
     build:
       context: .
@@ -9,5 +18,7 @@ services:
       - "8000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    volumes:
-      - ./FixedAssets.Api:/app
+
+networks:
+  default:
+    name: myapp-network
